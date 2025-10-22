@@ -1,0 +1,1 @@
+# Sistema-Triaje-Hospitalario
