@@ -1,31 +1,37 @@
 #include <iostream>
-#include <windows.h>
+#include <windows.h>   // Para manejar colores de consola y sonidos (Beep)
 #include <string>
-#include <locale.h>
-#include <cstdlib>
+#include <locale.h>    // Para configurar idioma y acentos
+#include <cstdlib>     // Para system("cls")
 using namespace std;
 
 // Configuración de consola
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // Para cambiar color de texto en la consola
 
-// Estructura del paciente
+
+// Estructura del Paciente
+
 struct Paciente {
-    int id;
-    string nombre;
-    int prioridad;
-    string sintoma;
-    Paciente* siguiente;
+    int id;            // Identificador único del paciente
+    string nombre;     // Nombre del paciente
+    int prioridad;     // Prioridad de atención (1: más urgente, 4: menos urgente)
+    string sintoma;    // Síntoma que presenta el paciente
+    Paciente* siguiente; // Puntero al siguiente paciente (para cola o pila)
 };
 
+
 // Punteros globales
-Paciente* frente = NULL;  // Cola de prioridad
-Paciente* pila = NULL;    // Pila (historial de atendidos)
+
+Paciente* frente = NULL;  // Inicio de la cola de prioridad (pacientes en espera)
+Paciente* pila = NULL;    // Pila para historial de pacientes atendidos
 
 
 // FUNCIONES DE APOYO
 
+
+// Crear un paciente dinámicamente
 Paciente* crearPaciente(int id, string nombre, int prioridad, string sintoma) {
-    Paciente* nuevo = new Paciente();
+    Paciente* nuevo = new Paciente(); // Reservar memoria
     nuevo->id = id;
     nuevo->nombre = nombre;
     nuevo->prioridad = prioridad;
@@ -37,14 +43,20 @@ Paciente* crearPaciente(int id, string nombre, int prioridad, string sintoma) {
 
 // COLA DE PRIORIDAD (TRIAJE)
 
+
+// Insertar paciente en la cola de atención según prioridad
 void encolarPaciente(Paciente* p) {
     if (p == NULL) return;
+
+    // Se crea una copia del paciente para la cola
     Paciente* nuevo = crearPaciente(p->id, p->nombre, p->prioridad, p->sintoma);
 
+    // Si la cola está vacía o el nuevo paciente tiene mayor prioridad que el frente
     if (frente == NULL || nuevo->prioridad < frente->prioridad) {
         nuevo->siguiente = frente;
         frente = nuevo;
     } else {
+        // Buscar posición correcta según prioridad
         Paciente* actual = frente;
         while (actual->siguiente != NULL && actual->siguiente->prioridad <= nuevo->prioridad)
             actual = actual->siguiente;
@@ -53,6 +65,7 @@ void encolarPaciente(Paciente* p) {
     }
 }
 
+// Mostrar todos los pacientes en la cola
 void mostrarCola() {
     if (frente == NULL) {
         cout << "\nNo hay pacientes en la cola.\n";
@@ -70,35 +83,44 @@ void mostrarCola() {
     }
 }
 
+
 // PILA (HISTORIAL / MEMORIA TEMPORAL)
 
+
+// Guardar paciente atendido en la pila (historial)
 void pushHistorial(Paciente* atendido) {
     atendido->siguiente = pila;
     pila = atendido;
 }
 
+// Atender al siguiente paciente (desencolar)
 void desencolarPaciente() {
     if (frente == NULL) {
         cout << "\nNo hay pacientes en espera.\n";
         return;
     }
 
+    // Sacar paciente del frente de la cola
     Paciente* atendido = frente;
     frente = frente->siguiente;
+
+    // Guardarlo en el historial
     pushHistorial(atendido);
 
+    // Cambiar color y sonido según prioridad
     int pr = atendido->prioridad;
-    if (pr == 1) SetConsoleTextAttribute(hConsole, 12);
-    else if (pr == 2) SetConsoleTextAttribute(hConsole, 14);
-    else if (pr == 3) SetConsoleTextAttribute(hConsole, 13);
-    else SetConsoleTextAttribute(hConsole, 10);
+    if (pr == 1) SetConsoleTextAttribute(hConsole, 12); // Rojo
+    else if (pr == 2) SetConsoleTextAttribute(hConsole, 14); // Amarillo
+    else if (pr == 3) SetConsoleTextAttribute(hConsole, 13); // Magenta
+    else SetConsoleTextAttribute(hConsole, 10); // Verde
 
-    Beep(600 + (5 - pr) * 150, 180);
+    Beep(600 + (5 - pr) * 150, 180); // Sonido según prioridad
     cout << "\nAtendiendo paciente: " << atendido->nombre
          << " (Prioridad " << atendido->prioridad << ")\n";
-    SetConsoleTextAttribute(hConsole, 7);
+    SetConsoleTextAttribute(hConsole, 7); // Restaurar color original
 }
 
+// Mostrar historial de pacientes atendidos
 void mostrarHistorial() {
     if (pila == NULL) {
         cout << "\nNo hay historial de pacientes atendidos.\n";
@@ -118,6 +140,8 @@ void mostrarHistorial() {
 
 // LIBERAR MEMORIA
 
+
+// Liberar toda la memoria dinámica usada
 void liberarMemoria() {
     while (frente != NULL) {
         Paciente* t = frente;
@@ -133,12 +157,12 @@ void liberarMemoria() {
 }
 
 
-// MENÚ PRINCIPAL DEL MÓDULO DE EDY
+// MENÚ PRINCIPAL
 
 void menuPlanificador() {
     int op;
     do {
-        system("cls");
+        system("cls"); // Limpiar pantalla
         cout << "\n========= PLANIFICADOR DE ATENCIÓN =========\n";
         cout << "1. Mostrar cola de pacientes\n";
         cout << "2. Atender siguiente paciente\n";
@@ -165,12 +189,11 @@ void menuPlanificador() {
 }
 
 
-// PROGRAMA PRINCIPAL DE EDY
+// PROGRAMA PRINCIPAL
 
 int main() {
-    setlocale(LC_ALL, "Spanish");
-    menuPlanificador();
+    setlocale(LC_ALL, "Spanish"); // Para que acepte acentos en consola
+    menuPlanificador();           // Llamada al menú principal
     return 0;
 }
-
 
