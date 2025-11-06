@@ -40,7 +40,7 @@ Paciente* crearPaciente(int id, string nombre, int prioridad, string sintoma) {
 void registrarPaciente() {
     int id, prioridad;
     string nombre, sintoma;
-    bool idUnico = false;  // Variable para verificar que el ID no se repita
+    bool idUnico = false;  // Verifica que el ID no se repita
 
     cout << "\n=== REGISTRO DE PACIENTE ===\n";
     
@@ -65,6 +65,11 @@ void registrarPaciente() {
             }
             actual = actual->siguiente;
         }
+
+    } while (!idUnico);
+
+    cin.ignore(); // Limpia el buffer antes de usar getline()
+
 
     //  VALIDAR NOMBRE (no vacío)
     cout << "Nombre: ";
@@ -227,14 +232,14 @@ void encolarPaciente(Paciente* p) {
 // Prepara la cola en base a la lista de pacientes
 void prepararCola() {
     while (frente != NULL) {
-        Paciente* t = frente;
-        frente = frente->siguiente;
-        delete t;
+        Paciente* t = frente; //Guardamos el primer nodo temporalmente
+        frente = frente->siguiente;    // Avanzamos al siguiente nodo
+        delete t;						// Liberamos la memoriadel nodo anterior
     }
-    Paciente* actual = lista;
+    Paciente* actual = lista;			
     while (actual != NULL) {
-        encolarPaciente(actual);
-        actual = actual->siguiente;
+        encolarPaciente(actual);		// la función se encarga de insertarlos en orden de prioridad
+        actual = actual->siguiente;		// pasamos al siguiente paciente de la lista
     }
     cout << "\nCola creada según prioridad.\n";
 }
