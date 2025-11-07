@@ -25,18 +25,18 @@ Paciente* pila = NULL;    // Pila (historial de pacientes atendidos)
 
 
 // FUNCIÓN: Crear un nuevo paciente (nodo de la lista)
-
+// se crea nodo de tipo Paciente en la memoria dinamica usando el new
 Paciente* crearPaciente(int id, string nombre, int prioridad, string sintoma) {
     Paciente* nuevo = new Paciente();  // Se reserva memoria dinámica
     nuevo->id = id;
     nuevo->nombre = nombre;
     nuevo->prioridad = prioridad;
     nuevo->sintoma = sintoma;
-    nuevo->siguiente = NULL; 
-    return nuevo;
+    nuevo->siguiente = NULL; // Se pone NULL porque aún no está conectado con otro nodo
+    return nuevo; // Devuelve el puntero nuevo que apunta al paciente recién creado
 }
 
-// FUNCIÓN: Registrar paciente con validaciones
+// FUNCIÓN: Registrar paciente con validaciones y se guardan en la lista enlazada
 void registrarPaciente() {
     int id, prioridad;
     string nombre, sintoma;
@@ -44,7 +44,7 @@ void registrarPaciente() {
 
     cout << "\n=== REGISTRO DE PACIENTE ===\n";
     
-    // VALIDACIÓN DE ID (único y positivo)
+    // VALIDACIÓN DOBLE DE ID (único y positivo)
     do {
         cout << "ID: ";
         cin >> id;
@@ -95,7 +95,7 @@ void registrarPaciente() {
         cin >> prioridad;
     }
     
-	// Crear el nuevo paciente
+	// Crear el nuevo paciente con la funcion crearPaciente() generando un nuevo nodo en memoria dinámica
     Paciente* nuevo = crearPaciente(id, nombre, prioridad, sintoma);
     
     // Insertar al final de la lista
@@ -126,9 +126,9 @@ void mostrarPacientes() {
         return;
     }
 
-    Paciente* actual = lista;
+    Paciente* actual = lista;  // se crea un puntuero llamado actual que comienza apuntando al inicio de la lista
     cout << "\n=== LISTA DE PACIENTES ===\n";
-    while (actual != NULL) {
+    while (actual != NULL) {  // se recorre toda la lista nodo por nodo hasta el final
         cout << "ID: " << actual->id
              << " | " << actual->nombre
              << " | Prioridad: " << actual->prioridad
@@ -166,8 +166,8 @@ void eliminarPaciente() {
     cout << "\nIngrese ID del paciente a eliminar: ";
     cin >> id;
 
-    Paciente* actual = lista;
-    Paciente* anterior = NULL;
+    Paciente* actual = lista;   // se declara actual para recorrer la lista
+    Paciente* anterior = NULL;  // anterior, para mantener la referencia al nodo anterior al que se está revisando
 
 	// Buscar paciete en la lista
     while (actual != NULL && actual->id != id) {
@@ -182,11 +182,11 @@ void eliminarPaciente() {
     }
     
 	// Si el paciente a eliminar es el primero
-    if (anterior == NULL) lista = actual->siguiente;
-    else anterior->siguiente = actual->siguiente;
+    if (anterior == NULL) lista = actual->siguiente;  // Si es el primer paciente de la lista, el puntero se mueve al siguiente nodo
+    else anterior->siguiente = actual->siguiente;	// Si esta en medio o el final, se conecta el nodo anterior con el sguiente
 
     cout << "\nPaciente " << actual->nombre << " eliminado.\n";
-    delete actual; // lliberar memoria del nodo eliminado
+    delete actual; // liberar memoria del nodo eliminado para evitar fugas
 }
 
 
