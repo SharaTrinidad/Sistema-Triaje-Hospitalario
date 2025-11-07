@@ -266,8 +266,8 @@ void mostrarCola() {
 // PILA (HISTORIAL DE ATENDIDOS)
 // Se usa una pila para registrar el orden en que fueron atendidos.
 void pushHistorial(Paciente* atendido) {
-    atendido->siguiente = pila;
-    pila = atendido;
+    atendido->siguiente = pila;  //siguiente
+    pila = atendido; //Hace que el nuevo paciente sea la cabeza del histori
 }
 
 // Atiende al paciente con mayor prioridad y lo pasa al historial
