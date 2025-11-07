@@ -1,7 +1,7 @@
-#include <iostream>   // Librería estándar para entrada y salida de datos (cout, cin)
+#include <iostream>   // LibrerÃ­a estÃ¡ndar para entrada y salida de datos (cout, cin)
 #include <windows.h>  // Permite el uso de colores en consola y funciones como Beep()
 #include <string>     // Para usar variables tipo string
-#include <locale.h>   // Permite configurar idioma (tildes, ñ)
+#include <locale.h>   // Permite configurar idioma (tildes, Ã±)
 #include <cstdlib>    // Para funciones del sistema como system("cls")
 
 using namespace std;
@@ -9,25 +9,25 @@ using namespace std;
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // Manejo de color en consola
 
 // ESTRUCTURA DEL PACIENTE
-// Cada nodo de la lista representa a un paciente con sus datos básicos
+// Cada nodo de la lista representa a un paciente con sus datos bÃ¡sicos
 struct Paciente {
-    int id; 				// Identificador único del paciente
+    int id; 				// Identificador Ãºnico del paciente
     string nombre;
-    int prioridad;			// Nivel de prioridad (1 = crítica, 5 = leve)
-    string sintoma;			// Síntoma principal
+    int prioridad;			// Nivel de prioridad (1 = crÃ­tica, 5 = leve)
+    string sintoma;			// SÃ­ntoma principal
     Paciente* siguiente;	// Puntero al siguiente paciente en la lista
 };
 
-// Punteros globales , se usan para manejar las 3 estructuras dinámicas
+// Punteros globales , se usan para manejar las 3 estructuras dinÃ¡micas
 Paciente* lista = NULL;   // Lista enlazada de pacientes registrados
 Paciente* frente = NULL;  // Cola de prioridad (triaje)
 Paciente* pila = NULL;    // Pila (historial de pacientes atendidos)
 
 
-// FUNCIÓN: Crear un nuevo paciente (nodo de la lista)
+// FUNCIÃ“N: Crear un nuevo paciente (nodo de la lista)
 
 Paciente* crearPaciente(int id, string nombre, int prioridad, string sintoma) {
-    Paciente* nuevo = new Paciente();  // Se reserva memoria dinámica
+    Paciente* nuevo = new Paciente();  // Se reserva memoria dinÃ¡mica
     nuevo->id = id;
     nuevo->nombre = nombre;
     nuevo->prioridad = prioridad;
@@ -36,7 +36,7 @@ Paciente* crearPaciente(int id, string nombre, int prioridad, string sintoma) {
     return nuevo;
 }
 
-// FUNCIÓN: Registrar paciente con validaciones
+// FUNCIÃ“N: Registrar paciente con validaciones
 void registrarPaciente() {
     int id, prioridad;
     string nombre, sintoma;
@@ -44,13 +44,13 @@ void registrarPaciente() {
 
     cout << "\n=== REGISTRO DE PACIENTE ===\n";
     
-    // VALIDACIÓN DE ID (único y positivo)
+    // VALIDACIÃ“N DE ID (Ãºnico y positivo)
     do {
         cout << "ID: ";
         cin >> id;
 
         if (id <= 0) {
-            cout << "Error: el ID debe ser un número positivo.\n";
+            cout << "Error: el ID debe ser un nÃºmero positivo.\n";
             continue;
         }
 
@@ -66,19 +66,19 @@ void registrarPaciente() {
             actual = actual->siguiente;
         }
 
-    //  VALIDAR NOMBRE (no vacío)
+    //  VALIDAR NOMBRE (no vacÃ­o)
     cout << "Nombre: ";
     getline(cin, nombre);
     while (nombre == "") {
-        cout << "Error: el nombre no puede estar vacío. Ingrese nuevamente: ";
+        cout << "Error: el nombre no puede estar vacÃ­o. Ingrese nuevamente: ";
         getline(cin, nombre);
     }
 
-    //  VALIDAR SÍNTOMA (no vacío)
-    cout << "Síntoma: ";
+    //  VALIDAR SÃNTOMA (no vacÃ­o)
+    cout << "SÃ­ntoma: ";
     getline(cin, sintoma);
     while (sintoma == "") {
-        cout << "Error: el síntoma no puede estar vacío. Ingrese nuevamente: ";
+        cout << "Error: el sÃ­ntoma no puede estar vacÃ­o. Ingrese nuevamente: ";
         getline(cin, sintoma);
     }
 
@@ -102,8 +102,8 @@ void registrarPaciente() {
         actual->siguiente = nuevo;
     }
 
-    // Colores según prioridad
-    if (prioridad == 1) SetConsoleTextAttribute(hConsole, 12);  // Rojo (crítico)
+    // Colores segÃºn prioridad
+    if (prioridad == 1) SetConsoleTextAttribute(hConsole, 12);  // Rojo (crÃ­tico)
     else if (prioridad == 2) SetConsoleTextAttribute(hConsole, 14); // Amarillo (media)
     else if (prioridad == 3) SetConsoleTextAttribute(hConsole, 13); // Magenta
     else SetConsoleTextAttribute(hConsole, 10); // Verde (leve)
@@ -114,7 +114,7 @@ void registrarPaciente() {
     SetConsoleTextAttribute(hConsole, 7); // Restaurar color normal
 }
 
-// FUNCIÓN: Mostrar lista completa de pacientes registrados
+// FUNCIÃ“N: Mostrar lista completa de pacientes registrados
 void mostrarPacientes() {
     if (lista == NULL) {
         cout << "\nNo hay pacientes registrados.\n";
@@ -127,12 +127,12 @@ void mostrarPacientes() {
         cout << "ID: " << actual->id
              << " | " << actual->nombre
              << " | Prioridad: " << actual->prioridad
-             << " | Síntoma: " << actual->sintoma << endl;
+             << " | SÃ­ntoma: " << actual->sintoma << endl;
         actual = actual->siguiente;
     }
 }
 
-// FUNCIÓN: Buscar paciente por ID
+// FUNCIÃ“N: Buscar paciente por ID
 void buscarPaciente() {
     if (lista == NULL) {
         cout << "\nNo hay pacientes registrados.\n";
@@ -155,7 +155,7 @@ void buscarPaciente() {
     cout << "\nPaciente no encontrado.\n";
 }
 
-// FUNCIÓN: Eliminar paciente de la lista por ID
+// FUNCIÃ“N: Eliminar paciente de la lista por ID
 void eliminarPaciente() {
     int id;
     cout << "\nIngrese ID del paciente a eliminar: ";
@@ -170,9 +170,9 @@ void eliminarPaciente() {
         actual = actual->siguiente;
     }
     
-	// Si no se encontró el ID del paciente
+	// Si no se encontrÃ³ el ID del paciente
     if (actual == NULL) {
-        cout << "\nNo se encontró paciente con ese ID.\n";
+        cout << "\nNo se encontrÃ³ paciente con ese ID.\n";
         return;
     }
     
@@ -185,7 +185,7 @@ void eliminarPaciente() {
 }
 
 
-// FUNCIÓN: Modificar prioridad de un paciente
+// FUNCIÃ“N: Modificar prioridad de un paciente
 void modificarPrioridad() {
     int id, nueva;
     cout << "\nIngrese ID del paciente: ";
@@ -205,9 +205,9 @@ void modificarPrioridad() {
     cout << "\nPaciente no encontrado.\n";
 }
 
-
+//Edy expo 
 // COLA DE PRIORIDAD (TRIAJE)
-// Esta cola se usa para ordenar pacientes según urgencia médica.
+// Esta cola se usa para ordenar pacientes segÃºn urgencia mÃ©dica.
 void encolarPaciente(Paciente* p) {
     if (p == NULL) return;
     Paciente* nuevo = crearPaciente(p->id, p->nombre, p->prioridad, p->sintoma);
@@ -236,10 +236,10 @@ void prepararCola() {
         encolarPaciente(actual);
         actual = actual->siguiente;
     }
-    cout << "\nCola creada según prioridad.\n";
+    cout << "\nCola creada segÃºn prioridad.\n";
 }
 
-// Mostrar pacientes en la cola (orden de atención)
+// Mostrar pacientes en la cola (orden de atenciÃ³n)
 void mostrarCola() {
     if (frente == NULL) {
         cout << "\nNo hay pacientes en la cola.\n";
@@ -247,12 +247,12 @@ void mostrarCola() {
     }
 
     Paciente* actual = frente;
-    cout << "\n=== COLA DE ATENCIÓN ===\n";
+    cout << "\n=== COLA DE ATENCIÃ“N ===\n";
     while (actual != NULL) {
         cout << "ID: " << actual->id
              << " | " << actual->nombre
              << " | Prioridad: " << actual->prioridad
-             << " | Síntoma: " << actual->sintoma << endl;
+             << " | SÃ­ntoma: " << actual->sintoma << endl;
         actual = actual->siguiente;
     }
 }
@@ -288,7 +288,7 @@ void atenderPaciente() {
     SetConsoleTextAttribute(hConsole, 7);
 }
 
-// Mostrar el historial completo (último atendido primero)
+// Mostrar el historial completo (Ãºltimo atendido primero)
 void mostrarHistorial() {
     if (pila == NULL) {
         cout << "\nNo hay historial de pacientes atendidos.\n";
@@ -316,7 +316,7 @@ void liberarMemoria() {
 }
 
 
-// MENÚ PRINCIPAL
+// MENÃš PRINCIPAL
 
 void menu() {
     int op;
@@ -328,8 +328,8 @@ void menu() {
         cout << "3. Buscar paciente\n";
         cout << "4. Eliminar paciente\n";
         cout << "5. Modificar prioridad\n";
-        cout << "6. Preparar cola de atención\n";
-        cout << "7. Mostrar cola de atención\n";
+        cout << "6. Preparar cola de atenciÃ³n\n";
+        cout << "7. Mostrar cola de atenciÃ³n\n";
         cout << "8. Atender siguiente paciente\n";
         cout << "9. Mostrar historial\n";
         cout << "0. Salir\n";
@@ -346,7 +346,7 @@ void menu() {
             case 8: atenderPaciente(); break;
             case 9: mostrarHistorial(); break;
             case 0: liberarMemoria(); cout << "\nSaliendo del sistema...\n"; break;
-            default: cout << "\nOpción inválida.\n"; break;
+            default: cout << "\nOpciÃ³n invÃ¡lida.\n"; break;
         }
 
         if (op != 0) {
@@ -359,11 +359,11 @@ void menu() {
 }
 
 
-// Función principal MAIN
+// FunciÃ³n principal MAIN
 
 int main() {
-    setlocale(LC_ALL, "Spanish"); // Permite usar tildes y ñ
-    menu(); 					  // Inicia el menú del programa
+    setlocale(LC_ALL, "Spanish"); // Permite usar tildes y Ã±
+    menu(); 					  // Inicia el menÃº del programa
     return 0;
 }
 
