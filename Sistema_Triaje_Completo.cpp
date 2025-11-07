@@ -210,7 +210,7 @@ void modificarPrioridad() {
     cout << "\nPaciente no encontrado.\n";
 }
 
-
+//Edy
 // COLA DE PRIORIDAD (TRIAJE)
 // Esta cola se usa para ordenar pacientes según urgencia médica.
 void encolarPaciente(Paciente* p) {
